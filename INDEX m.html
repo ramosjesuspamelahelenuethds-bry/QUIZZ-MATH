@@ -1,0 +1,2437 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MateQuiz | Banco de Preguntas</title>
+
+    <!-- =====================================================
+         FUENTES
+    ====================================================== -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- =====================================================
+         CSS EXTERNO
+    ====================================================== -->
+
+    <link rel="stylesheet" href="ESTILOS.css"type="text/css">
+
+    <!-- =====================================================
+         MATHJAX
+    ====================================================== -->
+
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+</head>
+
+<body>
+
+    <!-- =====================================================
+         ELEMENTOS MATEMÁTICOS DECORATIVOS
+    ====================================================== -->
+
+    <div class="matematica-flotante f1">π</div>
+    <div class="matematica-flotante f2">∑</div>
+    <div class="matematica-flotante f3">√x</div>
+    <div class="matematica-flotante f4">x²</div>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                ∑
+            </div>
+
+            <span>
+                MateQuiz
+            </span>
+
+        </div>
+
+
+        <div class="nav-buttons">
+
+            <button
+                class="nav-btn"
+                onclick="irQuiz()">
+
+                🧠 Quiz
+
+            </button>
+
+
+            <button
+                class="nav-btn"
+                onclick="ayuda()">
+
+                💡 Ayuda
+
+            </button>
+
+
+            <button
+                class="nav-btn"
+                onclick="modoOscuro()">
+
+                🌙
+
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <header class="hero">
+
+        <div class="hero-content">
+
+            <div class="etiqueta">
+
+                📘 BANCO DE PREGUNTAS · CONTENIDO 1
+
+            </div>
+
+
+            <h1>
+
+                Matemática
+                <br>
+                Interactiva
+
+            </h1>
+
+
+            <p>
+
+                Aprende álgebra, productos notables,
+                factorización, ecuaciones y sistemas
+                mediante un quiz dinámico y didáctico.
+
+            </p>
+
+        </div>
+
+
+        <div class="hero-formulas">
+
+            \(x^2+\sqrt{x}+\frac{a}{b}\)
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         CONTENIDO PRINCIPAL
+    ====================================================== -->
+
+    <main
+        class="container"
+        id="quiz">
+
+
+        <!-- =================================================
+             BUSCADOR Y BOTONES
+        ================================================== -->
+
+        <section class="panel">
+
+            <div class="busqueda">
+
+                <span class="lupa">
+                    🔎
+                </span>
+
+                <input
+                    type="text"
+                    id="buscar"
+                    placeholder="Buscar por número o palabra..."
+                    oninput="buscarPregunta()"
+                >
+
+            </div>
+
+
+            <button
+                class="boton boton-principal"
+                onclick="mezclar()">
+
+                🔀 Mezclar
+
+            </button>
+
+
+            <button
+                class="boton boton-secundario"
+                onclick="reiniciar()">
+
+                🔄 Reiniciar
+
+            </button>
+
+
+            <button
+                class="boton boton-secundario"
+                onclick="modoOscuro()">
+
+                🌙 Modo
+
+            </button>
+
+        </section>
+
+
+        <!-- =================================================
+             ESTADÍSTICAS
+        ================================================== -->
+
+        <section class="estadisticas">
+
+
+            <div class="estadistica">
+
+                <div class="estadistica-icono">
+                    📚
+                </div>
+
+                <div
+                    class="estadistica-numero"
+                    id="total">
+
+                    29
+
+                </div>
+
+                <div class="estadistica-texto">
+
+                    Preguntas
+
+                </div>
+
+            </div>
+
+
+            <div class="estadistica">
+
+                <div class="estadistica-icono">
+                    ⭐
+                </div>
+
+                <div
+                    class="estadistica-numero"
+                    id="puntos">
+
+                    0
+
+                </div>
+
+                <div class="estadistica-texto">
+
+                    Puntos
+
+                </div>
+
+            </div>
+
+
+            <div class="estadistica">
+
+                <div class="estadistica-icono">
+                    ✅
+                </div>
+
+                <div
+                    class="estadistica-numero"
+                    id="correctas">
+
+                    0
+
+                </div>
+
+                <div class="estadistica-texto">
+
+                    Correctas
+
+                </div>
+
+            </div>
+
+
+            <div class="estadistica">
+
+                <div class="estadistica-icono">
+                    ⏱️
+                </div>
+
+                <div
+                    class="estadistica-numero"
+                    id="tiempo">
+
+                    60
+
+                </div>
+
+                <div class="estadistica-texto">
+
+                    Segundos
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             BARRA DE PROGRESO
+        ================================================== -->
+
+        <section class="progreso">
+
+            <div class="progreso-info">
+
+                <span id="progresoTexto">
+
+                    Pregunta 1 de 29
+
+                </span>
+
+
+                <span id="porcentaje">
+
+                    0%
+
+                </span>
+
+            </div>
+
+
+            <div class="progreso-barra">
+
+                <div
+                    class="progreso-relleno"
+                    id="barra">
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             TARJETA DEL QUIZ
+        ================================================== -->
+
+        <section
+            class="quiz-card"
+            id="quizCard">
+
+
+            <div class="numero-pregunta">
+
+                PREGUNTA&nbsp;
+
+                <span id="numero">
+                    1
+                </span>
+
+            </div>
+
+
+            <div
+                class="pregunta"
+                id="pregunta">
+
+            </div>
+
+
+            <div
+                class="opciones"
+                id="opciones">
+
+            </div>
+
+
+            <!-- EXPLICACIÓN -->
+
+            <div
+                class="explicacion"
+                id="explicacion">
+
+
+
+                <h3>
+
+                    💡 Explicación
+
+                </h3>
+
+
+                <p
+                    id="textoExplicacion">
+
+                </p>
+
+            </div>
+
+
+            <!-- BOTÓN SIGUIENTE -->
+
+            <div class="siguiente">
+
+                <button
+                    class="boton boton-principal"
+                    id="siguiente"
+                    onclick="siguiente()"
+                    style="display:none">
+
+                    Siguiente ➜
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             RESULTADO FINAL
+        ================================================== -->
+
+        <section
+            class="resultado"
+            id="resultado">
+
+
+            <div class="trofeo">
+
+                🏆
+
+            </div>
+
+
+            <h2>
+
+                ¡Quiz terminado!
+
+            </h2>
+
+
+            <p>
+
+                Tu resultado final es:
+
+            </p>
+
+
+            <div
+                class="puntaje-final"
+                id="puntajeFinal">
+
+                0 / 29
+
+            </div>
+
+
+            <p
+                id="mensajeFinal">
+
+            </p>
+
+
+            <br>
+
+
+            <button
+                class="boton boton-principal"
+                onclick="reiniciar()">
+
+                🔄 Intentar nuevamente
+
+            </button>
+
+        </section>
+
+
+        <!-- =================================================
+             APRENDIZAJE
+        ================================================== -->
+
+        <section class="aprendizaje">
+
+
+            <article class="aprendizaje-card">
+
+                <div class="aprendizaje-icono">
+
+                    📏
+
+                </div>
+
+
+                <h3>
+
+                    Álgebra
+
+                </h3>
+
+
+                <p>
+
+                    Practica polinomios,
+                    exponentes, productos
+                    notables y operaciones
+                    algebraicas.
+
+                </p>
+
+            </article>
+
+
+            <article class="aprendizaje-card">
+
+                <div class="aprendizaje-icono">
+
+                    ✏️
+
+                </div>
+
+
+                <h3>
+
+                    Ecuaciones
+
+                </h3>
+
+
+                <p>
+
+                    Aprende a resolver
+                    ecuaciones y sistemas
+                    paso a paso.
+
+                </p>
+
+            </article>
+
+
+            <article class="aprendizaje-card">
+
+                <div class="aprendizaje-icono">
+
+                    🚀
+
+                </div>
+
+
+                <h3>
+
+                    Aprende jugando
+
+                </h3>
+
+
+                <p>
+
+                    Recibe inmediatamente
+                    una explicación cuando
+                    respondas.
+
+                </p>
+
+            </article>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer>
+
+        <div class="footer-titulo">
+
+            ¡La matemática también
+            puede ser divertida! ✨
+
+        </div>
+
+
+        <p>
+
+            Banco de Preguntas de Matemática
+            · Contenido 1
+
+        </p>
+
+    </footer>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+
+        /* =====================================================
+           BANCO DE PREGUNTAS
+        ====================================================== */
+
+        const banco = [
+
+            {
+                numero: 1,
+
+                pregunta:
+                `El residuo de \\(x^3-2x^2+1\\) entre \\(x-2\\) es:`,
+
+                opciones: [
+                    `\\(1\\)`,
+                    `\\(-154\\)`,
+                    `\\(0\\)`,
+                    `\\(17\\)`
+                ],
+
+                correcta: 0,
+
+                explicacion:
+                `Aplicamos el teorema del residuo.
+                Evaluamos el polinomio en \\(x=2\\):
+
+                \\[
+                P(2)=2^3-2(2^2)+1
+                \\]
+
+                \\[
+                P(2)=8-8+1=1
+                \\]
+
+                Por lo tanto, el residuo es \\(1\\).`
+            },
+
+
+            {
+                numero: 2,
+
+                pregunta:
+                `El resultado del producto:
+
+                \\[
+                (3x^3-4x^2-7x)
+                \\left(x-\\frac{1}{x}\\right)
+                \\]`,
+
+                opciones: [
+                    `\\(-3x^4+4x^3+7x\\)`,
+                    `\\(3x^4-4x^3-10x^2+4x+7\\)`,
+                    `\\(5x^4-7x^3-3x^2+7\\)`,
+                    `\\(3x^4+4x^3+7x\\)`
+                ],
+
+                correcta: 1,
+
+                explicacion:
+                `Se aplica la propiedad distributiva.
+                Cada término del primer polinomio debe multiplicarse
+                por cada término del segundo polinomio y posteriormente
+                se reducen los términos semejantes.`
+            },
+
+
+            {
+                numero: 3,
+
+                pregunta:
+                `El resultado del desarrollo de
+                \\((x-\\sqrt{y})(x+\\sqrt{y})\\) es:`,
+
+                opciones: [
+                    `\\(x^2-y^2\\)`,
+                    `\\(x^2-y\\)`,
+                    `\\(x^2+\\sqrt{y}\\)`,
+                    `\\(-x^2+y^2\\)`
+                ],
+
+                correcta: 1,
+
+                explicacion:
+                `Es un producto de binomios conjugados:
+
+                \\[
+                (a-b)(a+b)=a^2-b^2
+                \\]
+
+                Como \\(b=\\sqrt{y}\\):
+
+                \\[
+                x^2-(\\sqrt{y})^2=x^2-y
+                \\]`
+            },
+
+
+            {
+                numero: 4,
+
+                pregunta:
+                `Al efectuar
+
+                \\[
+                (5a^{n+1}+3a^m)(3a^n-5a^{n+2})
+                \\]
+
+                se tiene:`,
+
+                opciones: [
+                    `\\(-9a^{2n}-25a^{2n+2}\\)`,
+                    `\\(9a^{2n}-25a^{2n+2}\\)`,
+                    `\\(9a^{2n}+25a^{2n+2}\\)`,
+                    `\\(-9a^{2n}+25a^{2n+2}\\)`
+                ],
+
+                correcta: 1,
+
+                explicacion:
+                `Se multiplica cada término y se utiliza la propiedad:
+
+                \\[
+                a^m\\cdot a^n=a^{m+n}
+                \\]
+
+                Después se reducen los términos semejantes.`
+            },
+
+
+            {
+                numero: 5,
+
+                pregunta:
+                `El residuo de la división de
+                \\(5a^3+2a^2-6\\) entre \\(a-4\\) es:`,
+
+                opciones: [
+                    `\\(218\\)`,
+                    `\\(208\\)`,
+                    `\\(229\\)`,
+                    `\\(228\\)`
+                ],
+
+                correcta: 3,
+
+                explicacion:
+                `Por el teorema del residuo evaluamos el polinomio
+                en \\(a=4\\).`
+            },
+
+
+            {
+                numero: 6,
+
+                pregunta:
+                `Desarrollar:
+
+                \\[
+                (2x^2-6xy+3y^2)^2
+                \\]`,
+
+                opciones: [
+                    `\\(2x^4+12xy+9y^2\\)`,
+                    `\\(4x^4-24x^3y+48x^2y^2-36xy^3+9y^4\\)`,
+                    `\\(2x^2-12xy+3y^2\\)`,
+                    `\\(-4x^2-12xy+9y^2\\)`
+                ],
+
+                correcta: 1,
+
+                explicacion:
+                `Se utiliza el cuadrado de un trinomio.
+                Cada término se multiplica por los demás términos
+                y se reducen los semejantes.`
+            },
+
+
+            {
+                numero: 7,
+
+                pregunta:
+                `Al factorizar
+
+                \\[
+                x^3-x^2+x-x^2
+                \\]
+
+                se tiene:`,
+
+                opciones: [
+                    `\\((x-1)^2(x+1)\\)`,
+                    `\\((x+1)^2(x-1)\\)`,
+                    `\\((x+1)(x-1)\\)`,
+                    `\\((x-1)^3\\)`
+                ],
+
+                correcta: 0,
+
+                explicacion:
+                `Se agrupan los términos y se buscan factores comunes.
+                Después se aplican productos notables cuando corresponda.`
+            },
+
+
+            {
+                numero: 8,
+
+                pregunta:
+                `Simplificar la siguiente expresión algebraica:
+
+                \\[
+                \\frac{x^2+4x-5}{x^2+7x+10}
+                \\]`,
+
+                opciones: [
+                    `\\(\\frac{x+1}{2}\\)`,
+                    `\\(\\frac{x+2}{x}\\)`,
+                    `\\(\\frac{x-1}{2}\\)`,
+                    `\\(\\frac{x-2}{x}\\)`
+                ],
+
+                correcta: 1,
+
+                explicacion:
+                `Se factorizan numerador y denominador y se cancelan
+                los factores comunes permitidos.`
+            },
+
+
+            {
+                numero: 9,
+
+                pregunta:
+                `Hallar el valor de \\(K\\) para que la división de
+                \\(x^3+Kx^2+x+K\\) entre \\(x-1\\)
+                sea exacta.`,
+
+                opciones: [
+                    `\\(-1\\)`,
+                    `\\(111\\)`,
+                    `\\(5\\)`,
+                    `\\(-4\\)`
+                ],
+
+                correcta: 0,
+
+                explicacion:
+                `Para que una división sea exacta, el residuo debe ser cero.
+
+                Por el teorema del residuo:
+
+                \\[
+                P(1)=0
+                \\]
+
+                Se sustituye \\(x=1\\) y se despeja \\(K\\).`
+            },
+
+
+            {
+                numero: 10,
+
+                pregunta:
+                `El valor de \\(x\\) en la ecuación
+
+                \\[
+                3x-2=2-x
+                \\]
+
+                es:`,
+
+                opciones: [
+                    `\\(x=-1\\)`,
+                    `\\(x=0\\)`,
+                    `\\(x=1\\)`,
+                    `\\(x=-2\\)`
+                ],
+
+                correcta: 2,
+
+                explicacion:
+                `Sumamos \\(x\\) a ambos lados:
+
+                \\[
+                4x-2=2
+                \\]
+
+                Luego:
+
+                \\[
+                4x=4
+                \\]
+
+                Por tanto:
+
+                \\[
+                x=1
+                \\]`
+            },
+
+
+            {
+                numero: 11,
+
+                pregunta:
+                `Al resolver la ecuación
+
+                \\[
+                \\frac{2(x-1)}{5}
+                =
+                \\frac{3(4-2x)}{10}
+                \\]
+
+                se tiene:`,
+
+                opciones: [
+                    `\\(x=\\frac{5}{3}\\)`,
+                    `\\(x=\\frac{5}{8}\\)`,
+                    `\\(x=\\frac{5}{4}\\)`,
+                    `\\(x=\\frac{5}{2}\\)`
+                ],
+
+                correcta: 1,
+
+                explicacion:
+                `Multiplicamos toda la ecuación por el mínimo común múltiplo
+                de los denominadores y después despejamos \\(x\\).`
+            },
+
+
+            {
+                numero: 12,
+
+                pregunta:
+                `El mínimo común múltiplo de
+
+                \\[
+                (x-2)^2,\\quad (x-2)^3,
+                \\quad 4(x-2)
+                \\]
+
+                es:`,
+
+                opciones: [
+                    `\\(x-2\\)`,
+                    `\\((x-2)^4\\)`,
+                    `\\(4(x-2)^3\\)`,
+                    `\\(x^2-4\\)`
+                ],
+
+                correcta: 2,
+
+                explicacion:
+                `Tomamos el mayor exponente del factor
+                \\((x-2)\\), que es \\(3\\), y el factor numérico \\(4\\).`
+            },
+
+
+            {
+                numero: 13,
+
+                pregunta:
+                `¿Cuál es la solución del siguiente sistema?
+
+                \\[
+                \\begin{cases}
+                3x-5y=31\\\\
+                5x-9y=55
+                \\end{cases}
+                \\]`,
+
+                opciones: [
+                    `\\(x=2,\\ y=5\\)`,
+                    `\\(x=2,\\ y=-5\\)`,
+                    `\\(x=-2,\\ y=5\\)`,
+                    `\\(x=-5,\\ y=2\\)`
+                ],
+
+                correcta: 0,
+
+                explicacion:
+                `Se puede resolver mediante eliminación.
+                Se multiplican las ecuaciones por constantes adecuadas
+                para eliminar una de las variables.`
+            },
+
+
+            {
+                numero: 14,
+
+                pregunta:
+                `La solución de la ecuación indicada en el PDF es:`,
+
+                opciones: [
+                    `\\(x=30\\)`,
+                    `\\(x=-30\\)`,
+                    `\\(x=0\\)`,
+                    `\\(x=2\\)`
+                ],
+
+                correcta: 1,
+
+                explicacion:
+                `Se eliminan los denominadores, se simplifica la ecuación
+                y finalmente se despeja la variable.`
+            },
+
+
+            {
+                numero: 15,
+
+                pregunta:
+                `Al simplificar la expresión algebraica indicada se tiene:`,
+
+                opciones: [
+                    `\\(xy\\)`,
+                    `\\(xy^2\\)`,
+                    `\\(xyz\\)`,
+                    `\\(x^2y^{16}\\)`
+                ],
+
+                correcta: 0,
+
+                explicacion:
+                `Se aplican las propiedades de los exponentes:
+
+                \\[
+                \\frac{x^a}{x^b}=x^{a-b}
+                \\]
+
+                y se simplifican los factores comunes.`
+            },
+
+
+            {
+                numero: 16,
+
+                pregunta:
+                `Hallar el valor solicitado en el sistema de ecuaciones
+                de la pregunta 16.`,
+
+                opciones: [
+                    `\\(2\\)`,
+                    `\\(5\\)`,
+                    `\\(7m^2\\)`,
+                    `\\(-2n\\)`
+                ],
+
+                correcta: 0,
+
+                explicacion:
+                `Se resuelve el sistema utilizando sustitución o eliminación.
+                La expresión matemática debe conservar exactamente los signos
+                del documento original.`
+            },
+
+
+            {
+                numero: 17,
+
+                pregunta:
+                `Resolviendo el sistema
+
+                \\[
+                \\begin{cases}
+                5x+7y=-1\\\\
+                -3x+4y=-24
+                \\end{cases}
+                \\]
+
+                se obtiene:`,
+
+                opciones: [
+                    `\\(x=4,\\ y=-3\\)`,
+                    `\\(x=-4,\\ y=3\\)`,
+                    `\\(x=4,\\ y=3\\)`,
+                    `\\(x=-4,\\ y=-3\\)`
+                ],
+
+                correcta: 0,
+
+                explicacion:
+                `Eliminamos una variable y obtenemos:
+
+                \\[
+                y=-3
+                \\]
+
+                Luego sustituimos y obtenemos:
+
+                \\[
+                x=4
+                \\]
+
+                Por tanto:
+
+                \\[
+                (x,y)=(4,-3)
+                \\]`
+            },
+
+
+            {
+                numero: 18,
+
+                pregunta:
+                `El resultado de la siguiente multiplicación es:
+
+                \\[
+                \\frac{x^2+4x-5}{x^2+7x+10}
+                \\]`,
+
+                opciones: [
+                    `\\(16a^2x^2y-6ax^2y\\)`,
+                    `\\(6ax^2y-16ax^2y\\)`,
+                    `\\(2ax^2-8x^2y\\)`,
+                    `\\(3y^2+8x^2y\\)`
+                ],
+
+                correcta: 1,
+
+                explicacion:
+                `Se aplica la propiedad distributiva y se multiplican
+                los coeficientes. Para potencias de la misma base se suman
+                los exponentes.`
+            },
+
+
+            {
+                numero: 19,
+
+                pregunta:
+                `Descomponer en factores la expresión indicada:
+
+                \\[
+                3ax^2-3a
+                \\]`,
+
+                opciones: [
+                    `\\(3a(x+1)\\)`,
+                    `\\(3a(x+1)(x-1)\\)`,
+                    `\\((x+1)(x-1)\\)`,
+                    `\\(3a(x-1)\\)`
+                ],
+
+                correcta: 1,
+
+                explicacion:
+                `Primero se extrae el factor común.
+                Después se identifica el producto notable correspondiente.`
+            },
+
+
+            {
+                numero: 20,
+
+                pregunta:
+                `Hallar el máximo común divisor de
+
+                \\[
+                5a^2-15a
+                \\]
+
+                y
+
+                \\[
+                3a^2-3a.
+                \\]`,
+
+                opciones: [
+                    `\\(5a(a-3)\\)`,
+                    `\\(a(a-3)\\)`,
+                    `\\(a(a+3)\\)`,
+                    `\\(15a(a-3)\\)`
+                ],
+
+                correcta: 1,
+
+                explicacion:
+                `Factorizamos:
+
+                \\[
+                5a^2-15a=5a(a-3)
+                \\]
+
+                y
+
+                \\[
+                3a^2-3a=3a(a-1)
+                \\]
+
+                Se identifican los factores comunes.`
+            },
+
+
+            {
+                numero: 21,
+
+                pregunta:
+                `El valor numérico de la expresión indicada,
+                para
+
+                \\[
+                m=-3,\\qquad n=9
+                \\]
+
+                es:`,
+
+                opciones: [
+                    `\\(1\\)`,
+                    `\\(-35\\)`,
+                    `\\(2\\)`,
+                    `\\(-5\\)`
+                ],
+
+                correcta: 2,
+
+                explicacion:
+                `Se sustituyen los valores de \\(m\\) y \\(n\\) en la expresión
+                y se respeta el orden de las operaciones.`
+            },
+
+
+            {
+                numero: 22,
+
+                pregunta:
+                `Reducir la expresión
+
+                \\[
+                \\frac{x-4}{3}
+                -
+                \\frac{x-2}{2-x}
+                -
+                \\frac{1}{x-2}
+                \\]`,
+
+                opciones: [
+                    `\\(2\\)`,
+                    `\\(1\\)`,
+                    `\\(5\\)`,
+                    `\\(-2\\)`
+                ],
+
+                correcta: 0,
+
+                explicacion:
+                `Se simplifican las potencias y los factores comunes
+                hasta obtener una sola expresión reducida.`
+            },
+
+
+            {
+                numero: 23,
+
+                pregunta:
+                `Expresar con exponentes positivos
+
+                \\[
+                \\frac{1}{2x-2}
+                \\]`,
+
+                opciones: [
+                    `\\(\\frac{x^2}{z}\\)`,
+                    `\\(\\frac{x}{z^2}\\)`,
+                    `\\(\\frac{1}{x^2}\\)`,
+                    `\\(\\frac{z}{x^2}\\)`
+                ],
+
+                correcta: 1,
+
+                explicacion:
+                `Recordemos que:
+
+                \\[
+                a^{-n}=\\frac{1}{a^n}
+                \\]
+
+                Por ello trasladar una potencia del numerador al denominador
+                cambia el signo de su exponente.`
+            },
+
+
+            {
+                numero: 24,
+
+                pregunta:
+                `Hallar la suma:
+
+                \\[
+                (2a+3b)+(6b-4c)+(-a+8c)
+                \\]`,
+
+                opciones: [
+                    `\\(a+9b-4c\\)`,
+                    `\\(a+9b+4c\\)`,
+                    `\\(-a+9b+4c\\)`,
+                    `\\(a-9b+4c\\)`
+                ],
+
+                correcta: 1,
+
+                explicacion:
+                `Eliminamos los paréntesis y agrupamos términos semejantes:
+
+                \\[
+                2a-a=a
+                \\]
+
+                \\[
+                3b+6b=9b
+                \\]
+
+                \\[
+                -4c+8c=4c
+                \\]
+
+                Por tanto:
+
+                \\[
+                a+9b+4c
+                \\]`
+            },
+
+
+            {
+                numero: 25,
+
+                pregunta:
+                `Hallar el resultado del producto:
+
+                \\[
+                (x-1)(x+3)(x+1)(x-3)
+                \\]`,
+
+                opciones: [
+                    `\\(x^4+9\\)`,
+                    `\\(x^4-9\\)`,
+                    `\\(x^4-10x^2+9\\)`,
+                    `\\(x^4+10x^2+9\\)`
+                ],
+
+                correcta: 2,
+
+                explicacion:
+                `Agrupamos binomios conjugados:
+
+                \\[
+                (x-1)(x+1)=x^2-1
+                \\]
+
+                \\[
+                (x+3)(x-3)=x^2-9
+                \\]
+
+                Entonces:
+
+                \\[
+                (x^2-1)(x^2-9)
+                \\]
+
+                \\[
+                =x^4-10x^2+9
+                \\]`
+            },
+
+
+            {
+                numero: 26,
+
+                pregunta:
+                `¿Cuál es el cociente de la división indicada?
+
+                \\[
+                \\frac{
+                2x^3-6x^2-8x+24
+                }{
+                2x+4
+                }
+                \\]`,
+
+                opciones: [
+                    `\\(x+3\\)`,
+                    `\\(2x^2-8\\)`,
+                    `\\(x^2-5x+6\\)`,
+                    `\\(x^2-2x\\)`
+                ],
+
+                correcta: 2,
+
+                explicacion:
+                `Factorizamos el numerador:
+
+                \\[
+                2x^3-6x^2-8x+24
+                =
+                2(x-3)(x^2-4)
+                \\]
+
+                Como:
+
+                \\[
+                x^2-4=(x-2)(x+2)
+                \\]
+
+                y
+
+                \\[
+                2x+4=2(x+2),
+                \\]
+
+                se cancelan los factores comunes.`
+            },
+
+
+            {
+                numero: 27,
+
+                pregunta:
+                `El máximo común divisor de las expresiones algebraicas
+                indicadas es:`,
+
+                opciones: [
+                    `\\(m^2+n^2\\)`,
+                    `\\(m^3-n^3\\)`,
+                    `\\(m+n\\)`,
+                    `\\(m-n\\)`
+                ],
+
+                correcta: 2,
+
+                explicacion:
+                `Se factorizan las expresiones y se toman los factores
+                que aparecen simultáneamente en ellas.`
+            },
+
+
+            {
+                numero: 28,
+
+                pregunta:
+                `Al simplificar la expresión racional indicada se obtiene
+
+                \\[
+                \\frac{x-1}{x^2-1}
+                \\]`,
+
+                opciones: [
+                    `\\(x+1\\)`,
+                    `\\(\\frac{x^2}{x+1}\\)`,
+                    `\\(\\frac{1}{x+1}\\)`,
+                    `\\(\\frac{1}{x^2-1}\\)`
+                ],
+
+                correcta: 1,
+
+                explicacion:
+                `Para simplificar una fracción algebraica se factoriza
+                el numerador y el denominador y se cancelan factores comunes.`
+            },
+
+
+            {
+                numero: 29,
+
+                pregunta:
+                `Expresar como producto de factores:
+
+                \\[
+                4x^3-12x^2-25x+75
+                \\]`,
+
+                opciones: [
+                    `\\((x-3)(2x-5)(2x+5)\\)`,
+                    `\\((x-3)(2x+5)(2x-5)\\)`,
+                    `\\((4x^2+25)(x+3)\\)`,
+                    `\\((4x^2-25)(x+3)\\)`
+                ],
+
+                correcta: 0,
+
+                explicacion:
+                `Agrupamos:
+
+                \\[
+                4x^3-12x^2-25x+75
+                \\]
+
+                \\[
+                =4x^2(x-3)-25(x-3)
+                \\]
+
+                Sacamos factor común:
+
+                \\[
+                =(x-3)(4x^2-25)
+                \\]
+
+                Aplicamos diferencia de cuadrados:
+
+                \\[
+                4x^2-25=(2x-5)(2x+5)
+                \\]
+
+                Por tanto:
+
+                \\[
+                \\boxed{(x-3)(2x-5)(2x+5)}
+                \\]`
+            }
+
+        ];
+
+
+        /* =====================================================
+           VARIABLES
+        ====================================================== */
+
+        let preguntas = [...banco];
+
+        let actual = 0;
+
+        let puntos = 0;
+
+        let correctas = 0;
+
+        let respondida = false;
+
+        let segundos = 60;
+
+        let intervalo;
+
+
+        /* =====================================================
+           ELEMENTOS
+        ====================================================== */
+
+        const preguntaHTML =
+            document.getElementById("pregunta");
+
+        const opcionesHTML =
+            document.getElementById("opciones");
+
+        const numeroHTML =
+            document.getElementById("numero");
+
+        const explicacionHTML =
+            document.getElementById("explicacion");
+
+        const textoExplicacion =
+            document.getElementById("textoExplicacion");
+
+        const siguienteHTML =
+            document.getElementById("siguiente");
+
+        const puntosHTML =
+            document.getElementById("puntos");
+
+        const correctasHTML =
+            document.getElementById("correctas");
+
+        const tiempoHTML =
+            document.getElementById("tiempo");
+
+        const barraHTML =
+            document.getElementById("barra");
+
+        const progresoTextoHTML =
+            document.getElementById("progresoTexto");
+
+        const porcentajeHTML =
+            document.getElementById("porcentaje");
+
+        const quizCard =
+            document.getElementById("quizCard");
+
+        const resultado =
+            document.getElementById("resultado");
+
+
+        /* =====================================================
+           CARGAR PREGUNTA
+        ====================================================== */
+
+        function cargarPregunta() {
+
+            respondida = false;
+
+            clearInterval(intervalo);
+
+            explicacionHTML.classList.remove("mostrar");
+
+            siguienteHTML.style.display = "none";
+
+            quizCard.classList.remove("cargando");
+
+            void quizCard.offsetWidth;
+
+            quizCard.classList.add("cargando");
+
+
+            const q =
+                preguntas[actual];
+
+
+            numeroHTML.textContent =
+                q.numero;
+
+
+            preguntaHTML.innerHTML =
+                q.pregunta;
+
+
+            opcionesHTML.innerHTML =
+                "";
+
+
+            const letras =
+                ["A", "B", "C", "D"];
+
+
+            q.opciones.forEach(
+                (texto, index) => {
+
+                    const boton =
+                        document.createElement("button");
+
+
+                    boton.className =
+                        "opcion";
+
+
+                    boton.innerHTML = `
+
+                        <span class="letra">
+                            ${letras[index]}
+                        </span>
+
+                        <span>
+                            ${texto}
+                        </span>
+
+                    `;
+
+
+                    boton.onclick =
+                        () =>
+                        responder(
+                            index,
+                            boton
+                        );
+
+
+                    opcionesHTML.appendChild(
+                        boton
+                    );
+
+                }
+            );
+
+
+            actualizarProgreso();
+
+
+            MathJax.typesetPromise([
+                preguntaHTML,
+                opcionesHTML
+            ]);
+
+
+            iniciarTemporizador();
+        }
+
+
+        /* =====================================================
+           RESPONDER
+        ====================================================== */
+
+        function responder(
+            indice,
+            botonSeleccionado
+        ) {
+
+            if (respondida) {
+                return;
+            }
+
+
+            respondida = true;
+
+
+            clearInterval(
+                intervalo
+            );
+
+
+            const q =
+                preguntas[actual];
+
+
+            const botones =
+                document.querySelectorAll(
+                    ".opcion"
+                );
+
+
+            botones.forEach(
+                boton => {
+
+                    boton.disabled =
+                        true;
+
+                    boton.style.cursor =
+                        "default";
+
+                }
+            );
+
+
+            if (
+                indice ===
+                q.correcta
+            ) {
+
+                botonSeleccionado
+                    .classList
+                    .add("correcta");
+
+
+                puntos += 10;
+
+                correctas++;
+
+
+                puntosHTML.textContent =
+                    puntos;
+
+
+                correctasHTML.textContent =
+                    correctas;
+
+
+                confeti();
+
+            } else {
+
+                botonSeleccionado
+                    .classList
+                    .add("incorrecta");
+
+
+                botones[
+                    q.correcta
+                ]
+                    .classList
+                    .add("correcta");
+
+            }
+
+
+            textoExplicacion.innerHTML =
+                q.explicacion;
+
+
+            explicacionHTML
+                .classList
+                .add("mostrar");
+
+
+            siguienteHTML.style.display =
+                "inline-block";
+
+
+            MathJax.typesetPromise([
+                textoExplicacion
+            ]);
+        }
+
+
+        /* =====================================================
+           SIGUIENTE
+        ====================================================== */
+
+        function siguiente() {
+
+            actual++;
+
+
+            if (
+                actual >=
+                preguntas.length
+            ) {
+
+                terminar();
+
+                return;
+            }
+
+
+            cargarPregunta();
+
+
+            window.scrollTo({
+
+                top:
+                    document
+                    .getElementById("quiz")
+                    .offsetTop - 80,
+
+                behavior:
+                    "smooth"
+
+            });
+        }
+
+
+        /* =====================================================
+           PROGRESO
+        ====================================================== */
+
+        function actualizarProgreso() {
+
+            const total =
+                preguntas.length;
+
+
+            const numeroActual =
+                actual + 1;
+
+
+            const porcentaje =
+                Math.round(
+                    (actual / total) * 100
+                );
+
+
+            progresoTextoHTML.textContent =
+                `Pregunta ${numeroActual} de ${total}`;
+
+
+            porcentajeHTML.textContent =
+                `${porcentaje}%`;
+
+
+            barraHTML.style.width =
+                `${porcentaje}%`;
+        }
+
+
+        /* =====================================================
+           TEMPORIZADOR
+        ====================================================== */
+
+        function iniciarTemporizador() {
+
+            clearInterval(
+                intervalo
+            );
+
+
+            segundos = 60;
+
+
+            tiempoHTML.textContent =
+                segundos;
+
+
+            tiempoHTML.style.color =
+                "#0789d1";
+
+
+            intervalo =
+                setInterval(
+                    () => {
+
+                        segundos--;
+
+
+                        tiempoHTML.textContent =
+                            segundos;
+
+
+                        if (
+                            segundos <= 10
+                        ) {
+
+                            tiempoHTML.style.color =
+                                "#ed4c55";
+
+                        }
+
+
+                        if (
+                            segundos <= 0
+                        ) {
+
+                            clearInterval(
+                                intervalo
+                            );
+
+                            tiempoAgotado();
+
+                        }
+
+                    },
+                    1000
+                );
+        }
+
+
+        /* =====================================================
+           TIEMPO AGOTADO
+        ====================================================== */
+
+        function tiempoAgotado() {
+
+            if (respondida) {
+                return;
+            }
+
+
+            respondida = true;
+
+
+            const q =
+                preguntas[actual];
+
+
+            const botones =
+                document.querySelectorAll(
+                    ".opcion"
+                );
+
+
+            botones.forEach(
+                boton => {
+
+                    boton.disabled =
+                        true;
+
+                }
+            );
+
+
+            botones[
+                q.correcta
+            ]
+                .classList
+                .add("correcta");
+
+
+            textoExplicacion.innerHTML = `
+
+                ⏰ <strong>
+                    Se terminó el tiempo.
+                </strong>
+
+                La respuesta correcta era:
+
+                ${q.opciones[q.correcta]}
+
+                <br><br>
+
+                ${q.explicacion}
+
+            `;
+
+
+            explicacionHTML
+                .classList
+                .add("mostrar");
+
+
+            siguienteHTML.style.display =
+                "inline-block";
+
+
+            MathJax.typesetPromise([
+                textoExplicacion
+            ]);
+        }
+
+
+        /* =====================================================
+           TERMINAR QUIZ
+        ====================================================== */
+
+        function terminar() {
+
+            clearInterval(
+                intervalo
+            );
+
+
+            quizCard.style.display =
+                "none";
+
+
+            resultado
+                .classList
+                .add("mostrar");
+
+
+            const total =
+                preguntas.length;
+
+
+            const porcentaje =
+                Math.round(
+                    (correctas / total) * 100
+                );
+
+
+            document.getElementById(
+                "puntajeFinal"
+            ).textContent =
+                `${correctas} / ${total}`;
+
+
+            let mensaje;
+
+
+            if (
+                porcentaje >= 90
+            ) {
+
+                mensaje =
+                    "🌟 ¡Excelente! Tienes un dominio muy bueno de los contenidos.";
+
+            } else if (
+                porcentaje >= 70
+            ) {
+
+                mensaje =
+                    "👏 ¡Muy bien! Tienes una buena base matemática.";
+
+            } else if (
+                porcentaje >= 50
+            ) {
+
+                mensaje =
+                    "💪 Vas por buen camino. Sigue practicando.";
+
+            } else {
+
+                mensaje =
+                    "📚 Repasa los procedimientos e inténtalo nuevamente.";
+
+            }
+
+
+            document.getElementById(
+                "mensajeFinal"
+            ).textContent =
+                mensaje;
+        }
+
+
+        /* =====================================================
+           REINICIAR
+        ====================================================== */
+
+        function reiniciar() {
+
+            clearInterval(
+                intervalo
+            );
+
+
+            preguntas =
+                [...banco];
+
+
+            actual = 0;
+
+            puntos = 0;
+
+            correctas = 0;
+
+
+            puntosHTML.textContent =
+                "0";
+
+
+            correctasHTML.textContent =
+                "0";
+
+
+            quizCard.style.display =
+                "block";
+
+
+            resultado
+                .classList
+                .remove("mostrar");
+
+
+            cargarPregunta();
+
+
+            window.scrollTo({
+
+                top:
+                    document
+                    .getElementById("quiz")
+                    .offsetTop - 80,
+
+                behavior:
+                    "smooth"
+
+            });
+        }
+
+
+        /* =====================================================
+           MEZCLAR
+        ====================================================== */
+
+        function mezclar() {
+
+            preguntas.sort(
+                () =>
+                    Math.random() - 0.5
+            );
+
+
+            actual = 0;
+
+            puntos = 0;
+
+            correctas = 0;
+
+
+            puntosHTML.textContent =
+                "0";
+
+
+            correctasHTML.textContent =
+                "0";
+
+
+            quizCard.style.display =
+                "block";
+
+
+            resultado
+                .classList
+                .remove("mostrar");
+
+
+            cargarPregunta();
+        }
+
+
+        /* =====================================================
+           BUSCAR
+        ====================================================== */
+
+        function buscarPregunta() {
+
+            const texto =
+                document
+                .getElementById("buscar")
+                .value
+                .toLowerCase()
+                .trim();
+
+
+            if (
+                texto === ""
+            ) {
+                return;
+            }
+
+
+            let indice =
+                preguntas.findIndex(
+                    q =>
+                        q.pregunta
+                        .toLowerCase()
+                        .includes(texto)
+                );
+
+
+            if (
+                indice === -1
+            ) {
+
+                indice =
+                    preguntas.findIndex(
+                        q =>
+                            String(
+                                q.numero
+                            ) === texto
+                    );
+
+            }
+
+
+            if (
+                indice !== -1
+            ) {
+
+                actual =
+                    indice;
+
+
+                quizCard.style.display =
+                    "block";
+
+
+                resultado
+                    .classList
+                    .remove("mostrar");
+
+
+                cargarPregunta();
+
+
+                document.getElementById(
+                    "buscar"
+                ).value =
+                    "";
+
+            }
+        }
+
+
+        /* =====================================================
+           MODO OSCURO
+        ====================================================== */
+
+        function modoOscuro() {
+
+            document.body
+                .classList
+                .toggle("oscuro");
+
+        }
+
+
+        /* =====================================================
+           IR AL QUIZ
+        ====================================================== */
+
+        function irQuiz() {
+
+            document
+                .getElementById("quiz")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
+
+        }
+
+
+        /* =====================================================
+           AYUDA
+        ====================================================== */
+
+        function ayuda() {
+
+            alert(
+`¿CÓMO UTILIZAR MATEQUIZ?
+
+1. Lee la pregunta.
+2. Observa cuidadosamente la fórmula.
+3. Selecciona A, B, C o D.
+4. Recibirás una explicación.
+5. Pulsa Siguiente.
+6. Al finalizar verás tu puntuación.
+
+Cada respuesta correcta vale 10 puntos.
+
+Tienes 60 segundos por pregunta.
+
+Puedes mezclar las preguntas.
+
+También puedes activar el modo oscuro.`
+            );
+
+        }
+
+
+        /* =====================================================
+           CONFETI
+        ====================================================== */
+
+        function confeti() {
+
+            const simbolos = [
+                "✦",
+                "★",
+                "◆",
+                "●",
+                "＋",
+                "π"
+            ];
+
+
+            for (
+                let i = 0;
+                i < 25;
+                i++
+            ) {
+
+                const elemento =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                elemento.textContent =
+                    simbolos[
+                        Math.floor(
+                            Math.random() *
+                            simbolos.length
+                        )
+                    ];
+
+
+                elemento.style.position =
+                    "fixed";
+
+
+                elemento.style.zIndex =
+                    "99999";
+
+
+                elemento.style.left =
+                    Math.random() *
+                    100 +
+                    "vw";
+
+
+                elemento.style.top =
+                    "-30px";
+
+
+                elemento.style.color =
+                    [
+                        "#0789d1",
+                        "#47c9f5",
+                        "#13b56b",
+                        "#ffd54f"
+                    ][
+                        Math.floor(
+                            Math.random() * 4
+                        )
+                    ];
+
+
+                elemento.style.fontSize =
+                    (
+                        12 +
+                        Math.random() * 20
+                    ) +
+                    "px";
+
+
+                elemento.style.pointerEvents =
+                    "none";
+
+
+                document.body.appendChild(
+                    elemento
+                );
+
+
+                const duracion =
+                    900 +
+                    Math.random() * 1000;
+
+
+                elemento.animate(
+
+                    [
+                        {
+                            transform:
+                                "translateY(0) rotate(0)",
+
+                            opacity: 1
+                        },
+
+                        {
+                            transform:
+                                `translateY(110vh)
+                                 rotate(${Math.random() * 720}deg)`,
+
+                            opacity: 0
+                        }
+                    ],
+
+                    {
+                        duration:
+                            duracion,
+
+                        easing:
+                            "cubic-bezier(.2,.7,.3,1)"
+                    }
+
+                );
+
+
+                setTimeout(
+                    () =>
+                        elemento.remove(),
+                    duracion
+                );
+
+            }
+        }
+
+
+        /* =====================================================
+           INICIAR
+        ====================================================== */
+
+        cargarPregunta();
+
+    </script>
+
+</body>
+
+</html>
+</html>
